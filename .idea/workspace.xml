@@ -4,7 +4,14 @@
     <list default="true" id="ffb4a84b-b88c-4322-abe9-61f1ef7283e7" name="Default Changelist" comment="">
       <change afterPath="$PROJECT_DIR$/../.gitignore" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../freq_ramp.png" afterDir="false" />
+<<<<<<< HEAD
       <change afterPath="$PROJECT_DIR$/.idea/other.xml" afterDir="false" />
+=======
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/rkf_mask.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/play_bag.py" afterDir="false" />
+>>>>>>> 1716c5abc1a74c25f3af61913e2265b59deb2408
       <change afterPath="$PROJECT_DIR$/../rkf_trajectory" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../scratch01/.idea/encodings.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../scratch01/.idea/misc.xml" afterDir="false" />
@@ -14,8 +21,11 @@
       <change afterPath="$PROJECT_DIR$/../scratch01/.idea/workspace.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../scratch01/imgproc.jpg" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../scratch01/test01.py" afterDir="false" />
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/play_bag.py" beforeDir="false" afterPath="$PROJECT_DIR$/play_bag.py" afterDir="false" />
+=======
+>>>>>>> 1716c5abc1a74c25f3af61913e2265b59deb2408
       <change beforePath="$PROJECT_DIR$/../rkf_mask1/.idea/encodings.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../rkf_mask1/.idea/misc.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../rkf_mask1/.idea/modules.xml" beforeDir="false" />
@@ -30,7 +40,11 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
+<<<<<<< HEAD
     <SUITE FILE_PATH="coverage/rkf_mask$scrath01.coverage" NAME="scratch01 Coverage Results" MODIFIED="1547766525126" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+=======
+    <SUITE FILE_PATH="coverage/rkf_mask$scrath01.coverage" NAME="scratch01 Coverage Results" MODIFIED="1547765153854" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+>>>>>>> 1716c5abc1a74c25f3af61913e2265b59deb2408
     <SUITE FILE_PATH="coverage/rkf_mask$Unnamed.coverage" NAME="scrath01 Coverage Results" MODIFIED="1547763584892" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="FileEditorManager">
@@ -43,8 +57,13 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/play_bag.py">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="285">
               <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
+=======
+            <state relative-caret-position="180">
+              <caret line="12" column="25" selection-start-line="12" selection-start-column="25" selection-end-line="12" selection-end-column="25" />
+>>>>>>> 1716c5abc1a74c25f3af61913e2265b59deb2408
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
               </folding>
@@ -105,7 +124,11 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$/scratch01.py" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+<<<<<<< HEAD
     <property name="settings.editor.selected.configurable" value="PyScientificConfigurable" />
+=======
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+>>>>>>> 1716c5abc1a74c25f3af61913e2265b59deb2408
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -132,7 +155,11 @@
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/play_bag.py" />
       <option name="PARAMETERS" value="" />
+<<<<<<< HEAD
       <option name="SHOW_COMMAND_LINE" value="false" />
+=======
+      <option name="SHOW_COMMAND_LINE" value="true" />
+>>>>>>> 1716c5abc1a74c25f3af61913e2265b59deb2408
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
       <option name="REDIRECT_INPUT" value="false" />
@@ -164,23 +191,39 @@
       <workItem from="1547762064731" duration="3000" />
       <workItem from="1547762956383" duration="77000" />
       <workItem from="1547763078760" duration="531000" />
+<<<<<<< HEAD
       <workItem from="1547763684545" duration="2730000" />
+=======
+      <workItem from="1547763684545" duration="1409000" />
+>>>>>>> 1716c5abc1a74c25f3af61913e2265b59deb2408
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
+<<<<<<< HEAD
     <option name="totallyTimeSpent" value="11166000" />
+=======
+    <option name="totallyTimeSpent" value="9845000" />
+>>>>>>> 1716c5abc1a74c25f3af61913e2265b59deb2408
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="927" height="1055" extended-state="4" />
     <editor active="true" />
     <layout>
+<<<<<<< HEAD
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.48694664" />
+=======
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.48694664" />
+>>>>>>> 1716c5abc1a74c25f3af61913e2265b59deb2408
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
+<<<<<<< HEAD
       <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.32937366" />
+=======
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32937366" />
+>>>>>>> 1716c5abc1a74c25f3af61913e2265b59deb2408
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -190,11 +233,19 @@
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5002767" side_tool="true" weight="0.32937366" />
       <window_info anchor="bottom" id="Terminal" order="11" />
+<<<<<<< HEAD
       <window_info anchor="bottom" id="Python Console" order="12" sideWeight="0.4997233" weight="0.3790497" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" auto_hide="true" x="385" y="265" width="290" height="575" id="SciView" order="3" show_stripe_button="false" type="FLOATING" weight="0.3291714" />
+=======
+      <window_info active="true" anchor="bottom" id="Python Console" order="12" sideWeight="0.4997233" visible="true" weight="0.3790497" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="SciView" order="3" />
+>>>>>>> 1716c5abc1a74c25f3af61913e2265b59deb2408
       <window_info anchor="right" id="Database" order="4" />
     </layout>
   </component>
@@ -215,8 +266,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/play_bag.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="285">
           <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
+=======
+        <state relative-caret-position="180">
+          <caret line="12" column="25" selection-start-line="12" selection-start-column="25" selection-end-line="12" selection-end-column="25" />
+>>>>>>> 1716c5abc1a74c25f3af61913e2265b59deb2408
           <folding>
             <element signature="e#0#13#0" expanded="true" />
           </folding>
