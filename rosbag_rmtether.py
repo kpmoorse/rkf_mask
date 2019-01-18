@@ -11,9 +11,33 @@ def rosbag_rmtether(fin, pause=False):
     bag = rosbag.Bag(fin, "r")
     bridge = CvBridge()
 
+    init = True
     for _, msg, _ in tqdm(bag, total=bag.get_message_count()):
 
         img = bridge.imgmsg_to_cv2(msg).copy()
+
+        if init:
+
+            # Extract and sharpen stabilization border
+            lower = 0
+            upper = 1
+            edgeMask = cv2.inRange(img, lower, upper)
+            edgeMask = cv2.dilate(edgeMask, np.ones((3, 3)))
+            img_tmp = cv2.bitwise_and(img, img, mask=255 - edgeMask)
+
+            nzx = sum(img[-1, :] != 0)
+            nzy = sum(img[:, 1] != 0)
+            img_tmp = img[-nzy:, :nzx]
+
+            # Extract foreground (dark)
+            lower = 1
+            upper = 160
+            fgMask = cv2.inRange(img_tmp, lower, upper)
+
+            # Calculate inpainted background image
+            bg = cv2.inpaint(img_tmp, cv2.dilate(fgMask, np.ones((20, 20))), 15, cv2.INPAINT_TELEA)
+
+            init = False
 
         # Extract tether polygon
         lsd = cv2.createLineSegmentDetector()
@@ -24,21 +48,13 @@ def rosbag_rmtether(fin, pause=False):
         points = edges.copy().reshape(-1, 2)
         points[:, 0] += lx/3
 
-        mask = img * 0
+        # Convert poly to mask and dilate
+        mask = bg * 0
         cv2.fillPoly(mask, [points.astype('int32')], 255)
         mask = cv2.dilate(mask, np.ones((3, 11)))
 
-        # cm = np.mean(points, axis=0)
-        # points[:, 0] += 0*(points[:, 0] - cm[0])
-
-        # Find statistical mode
-        hist = np.histogram(img, 256)
-        mode = hist[1][np.argsort(hist[0])[-2]]
-
-        # c =
-        # cv2.fillPoly(img, [points.astype('int32')], mode)
-        # img = cv2.bitwise_and(img, img*0, mask=mask)
-        img[mask == 255] = mode
+        # Apply bg tether mask and show
+        img[:nzy, :nzx][mask == 255] = bg[mask == 255]
         cv2.imshow('image', img)
 
         if pause:
