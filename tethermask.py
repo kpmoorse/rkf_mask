@@ -10,7 +10,7 @@ class TetherMask(object):
 
     def __init__(self, pub_topic="masked_image", sub_topic="stabilized_image"):
 
-        self.img_pub = rospy.Publisher(pub_topic, Image)
+        self.img_pub = rospy.Publisher(pub_topic, Image, queue_size=10)
         self.img_sub = rospy.Subscriber(sub_topic, Image, self.callback)
         self.bridge = CvBridge()
 
@@ -23,6 +23,8 @@ class TetherMask(object):
             print(e)
 
         img = self.tmask(img)
+        cv2.imshow('image', img)
+        cv2.waitKey(10)
 
         try:
             self.img_pub.publish(self.bridge.cv2_to_imgmsg(img))
@@ -58,7 +60,14 @@ class TetherMask(object):
 
         return img
 
-    # Display bag contents as video with tether mask applied
+    # *** Below functions are for testing only ***
+
+    def msg_to_img(self, msg):
+
+        imgmsg = msg[1]
+        img = self.bridge.imgmsg_to_cv2(imgmsg).copy()
+        return img
+
     def masked_playback(self, bag, framelock=30):
 
         for msg in bag:
