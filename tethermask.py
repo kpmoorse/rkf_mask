@@ -23,8 +23,6 @@ class TetherMask(object):
             print(e)
 
         img = self.tmask(img)
-        cv2.imshow('image', img)
-        cv2.waitKey(10)
 
         try:
             self.img_pub.publish(self.bridge.cv2_to_imgmsg(img))

@@ -12,9 +12,14 @@ class RosbagStream(object):
         rospy.init_node('img_stream')
         self.bag = rosbag.Bag(fin, 'r')
 
-    def img_stream(self, framelock=30):
+    def img_stream(self, framerate=30, loop=False):
 
-        for topic, msg, t in self.bag:
+        flag = True
+        while flag:
 
-            self.img_pub.publish(msg)
-            sleep(1./30)
+            for topic, msg, t in self.bag:
+
+                self.img_pub.publish(msg)
+                sleep(1./framerate)
+
+            flag = loop

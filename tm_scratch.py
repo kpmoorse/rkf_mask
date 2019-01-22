@@ -1,6 +1,7 @@
 import rosbag
 from tethermask import TetherMask
 from rosbagstream import RosbagStream
+from cvdisplay import CvDisplay
 
 # Load bag file and pass to TetherMask class
 # tm = TetherMask()
@@ -9,7 +10,11 @@ from rosbagstream import RosbagStream
 
 if __name__ == "__main__":
 
+    # Init stream, mask, and display nodes
     rbs = RosbagStream('rkf_test01.bag')
     tm = TetherMask()
-    rbs.img_stream()
+    cvd = CvDisplay()
+
+    # Start image stream
+    rbs.img_stream(loop=False)
 
