@@ -9,7 +9,7 @@ class RosbagStream(object):
     def __init__(self, fin, pub_topic="stabilized_image"):
 
         self.img_pub = rospy.Publisher(pub_topic, Image, queue_size=10)
-        rospy.init_node('img_stream')
+        rospy.init_node('rosbag_stream')
         self.bag = rosbag.Bag(fin, 'r')
 
     def img_stream(self, framerate=30, loop=False):

@@ -9,8 +9,9 @@ class CvDisplay(object):
     def __init__(self, sub_topic="masked_image"):
 
         self.img_sub = rospy.Subscriber(sub_topic, Image, self.callback)
-        # rospy.init_node('display')
+        rospy.init_node('cv_display')
         self.bridge = CvBridge()
+        rospy.spin()
 
     def callback(self, data):
 

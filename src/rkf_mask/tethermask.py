@@ -13,6 +13,8 @@ class TetherMask(object):
         self.img_pub = rospy.Publisher(pub_topic, Image, queue_size=10)
         self.img_sub = rospy.Subscriber(sub_topic, Image, self.callback)
         self.bridge = CvBridge()
+        rospy.init_node('tether_mask')
+        rospy.spin()
 
     # When message is received, apply mask and publish
     def callback(self, data):

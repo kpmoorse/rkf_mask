@@ -1,0 +1,7 @@
+#!/usr/bin/env python
+
+from rkf_mask import RosbagStream
+
+if __name__ == '__main__':
+    rbs = RosbagStream('/home/dickinsonlab/PycharmProjects/rkf_mask/rkf_test01.bag')
+    rbs.img_stream()
