@@ -8,12 +8,16 @@ from sensor_msgs.msg import Image
 
 class TetherMask(object):
 
-    def __init__(self, pub_topic="masked_image", sub_topic="stabilized_image"):
+    def __init__(self):
+
+        rospy.init_node('tether_mask')
+        sub_topic = rospy.get_param(rospy.resolve_name("~input_image"))
+        pub_topic = rospy.get_param(rospy.resolve_name("~output_image"))
 
         self.img_pub = rospy.Publisher(pub_topic, Image, queue_size=10)
         self.img_sub = rospy.Subscriber(sub_topic, Image, self.callback)
         self.bridge = CvBridge()
-        rospy.init_node('tether_mask')
+
         rospy.spin()
 
     # When message is received, apply mask and publish

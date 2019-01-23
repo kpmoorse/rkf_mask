@@ -6,11 +6,14 @@ from cv_bridge import CvBridge, CvBridgeError
 
 class CvDisplay(object):
 
-    def __init__(self, sub_topic="masked_image"):
+    def __init__(self):
+
+        rospy.init_node('cv_display')
+        sub_topic = rospy.get_param(rospy.resolve_name("~input_image"))
 
         self.img_sub = rospy.Subscriber(sub_topic, Image, self.callback)
-        rospy.init_node('cv_display')
         self.bridge = CvBridge()
+
         rospy.spin()
 
     def callback(self, data):

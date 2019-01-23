@@ -6,10 +6,13 @@ from time import time, sleep
 
 class RosbagStream(object):
 
-    def __init__(self, fin, pub_topic="stabilized_image"):
+    def __init__(self):
+
+        rospy.init_node('rosbag_stream')
+        pub_topic = rospy.get_param(rospy.resolve_name("~output_image"))
+        fin = rospy.get_param(rospy.resolve_name("~bagfile"))
 
         self.img_pub = rospy.Publisher(pub_topic, Image, queue_size=10)
-        rospy.init_node('rosbag_stream')
         self.bag = rosbag.Bag(fin, 'r')
 
     def img_stream(self, framerate=30, loop=False):
