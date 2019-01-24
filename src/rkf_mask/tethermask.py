@@ -11,9 +11,10 @@ class TetherMask(object):
     def __init__(self):
 
         rospy.init_node('tether_mask')
-        sub_topic = rospy.get_param(rospy.resolve_name("~input_image"))
-        pub_topic = rospy.get_param(rospy.resolve_name("~output_image"))
+        sub_topic = rospy.get_param(rospy.resolve_name("~input_image"), "stabilized_image")
+        pub_topic = rospy.get_param(rospy.resolve_name("~output_image"), "masked_image")
 
+        self.trunc = rospy.get_param(rospy.resolve_name("~truncation"), 0.5)
         self.img_pub = rospy.Publisher(pub_topic, Image, queue_size=10)
         self.img_sub = rospy.Subscriber(sub_topic, Image, self.callback)
         self.bridge = CvBridge()
@@ -49,7 +50,14 @@ class TetherMask(object):
         points = edges.copy().reshape(-1, 2)
         points[:, 0] += lx / 3
 
-        # Extract non-artifact region
+        # Truncate tether polygon
+        for i in range(2):
+            sign = np.sign(points[2*i, 1] - points[2*i+1, 1])
+            top = 2*i + int(sign+1)/2
+            bot = 2*i + int(-sign+1)/2
+            points[top, :] += self.trunc * (points[bot, :] - points[top, :])
+
+        # Extract region unaffected by stabilization border artifacts
         nzx = sum(img[-1, :] != 0)
         nzy = sum(img[:, 1] != 0)
         img_tmp = img[-nzy:, :nzx]
