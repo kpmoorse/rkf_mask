@@ -62,13 +62,12 @@ class TetherMask(object):
         nzy = sum(img[:, 1] != 0)
         img_tmp = img[-nzy:, :nzx]
 
-        # Generate tether mask and dilate
-        mask = img_tmp * 0
+        mask = img * 0
         cv2.fillPoly(mask, [points.astype('int32')], 255)
         mask = cv2.dilate(mask, np.ones((21, 15)))
 
         # Inpaint over tether mask
-        img[-nzy:, :nzx] = cv2.inpaint(img[:nzy, :nzx], mask, 10, cv2.INPAINT_TELEA)
+        img = cv2.inpaint(img, mask, 10, cv2.INPAINT_TELEA)
 
         return img
 

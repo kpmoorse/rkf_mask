@@ -9,7 +9,7 @@ class CvDisplay(object):
     def __init__(self):
 
         rospy.init_node('cv_display')
-        sub_topic = rospy.get_param(rospy.resolve_name("~input_image"))
+        sub_topic = rospy.get_param(rospy.resolve_name("~input_image"), "/masked_image")
 
         self.img_sub = rospy.Subscriber(sub_topic, Image, self.callback)
         self.bridge = CvBridge()
