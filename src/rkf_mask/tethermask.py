@@ -62,9 +62,13 @@ class TetherMask(object):
         mask = cv2.dilate(mask, np.ones((21, 15)))
 
         # Inpaint over tether mask
-        img = cv2.inpaint(img, mask, 10, cv2.INPAINT_TELEA)
+        rad = rospy.get_param(rospy.resolve_name("~inpaint_radius"), 8)
+        img = cv2.inpaint(img, mask, rad, cv2.INPAINT_TELEA)
 
-        if rospy.get_param(rospy.resolve_name("~draw_diagnostic"), False):
+        draw = rospy.get_param(rospy.resolve_name("~draw_diagnostic"), False)
+        if draw:
+            alpha = 0.25
+            img = cv2.addWeighted(mask, alpha, img, 1-alpha, 0)
             for line in lines[0]:
                 x1, y1, x2, y2 = line[0]
                 cv2.line(img, (int(x1+lx/3), y1), (int(x2+lx/3), y2), (255, 255, 255))
