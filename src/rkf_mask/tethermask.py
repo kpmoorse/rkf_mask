@@ -45,11 +45,13 @@ class TetherMask(object):
         thresh = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, np.ones((15, 15)))
 
         # Initialize LSD with exposed parameters
-        ang = rospy.get_param(rospy.resolve_name("~_ang_th"), 25)
+        scl = rospy.get_param(rospy.resolve_name("~_scale"), 0.8)
         sig = rospy.get_param(rospy.resolve_name("~_sigma_scale"), 1.0)
+        ang = rospy.get_param(rospy.resolve_name("~_ang_th"), 25)
         lsd = cv2.createLineSegmentDetector(_refine=cv2.LSD_REFINE_NONE,
-                                            _ang_th=ang,
-                                            _sigma_scale=sig)
+                                            _scale=scl,
+                                            _sigma_scale=sig,
+                                            _ang_th=ang)
 
         # Apply LSD to ROI (top-middle of 2x3 grid)
         ly, lx = img.shape
