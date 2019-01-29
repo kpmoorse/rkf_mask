@@ -55,14 +55,16 @@ class TetherMask(object):
 
         # Apply LSD to ROI (top-middle of 2x3 grid)
         ly, lx = img.shape
-        lines = lsd.detect(thresh[:int(ly / 2), int(lx / 3):int(2 * lx / 3)])
+        px = rospy.get_param(rospy.resolve_name("~ROI_x"), 1./3)
+        py = rospy.get_param(rospy.resolve_name("~ROI_y"), 1./2)
+        lines = lsd.detect(thresh[:int(ly*py), int(lx*(1-px)/2):int(lx*(1+px)/2)])
         dy = lines[0][:, 0, 3] - lines[0][:, 0, 1]
 
         # Find tether polygon
         # ***Assumes tether edges are the longest straight lines in the ROI***
         edges = lines[0][np.argsort(np.abs(dy))[-2:]]
         points = edges.copy().reshape(-1, 2)
-        points[:, 0] += lx / 3
+        points[:, 0] += lx*(1-px)/2
 
         # Truncate tether polygon for performance improvement
         trunc = rospy.get_param(rospy.resolve_name("~truncation"), 0.8)
@@ -88,9 +90,9 @@ class TetherMask(object):
             img = cv2.addWeighted(mask, alpha, img, 1-alpha, 0)
             for line in lines[0]:
                 x1, y1, x2, y2 = line[0]
-                cv2.line(img, (int(x1 + lx / 3), y1), (int(x2 + lx / 3), y2), 255)
-                cv2.circle(img, (int(x1+lx/3), y1), 2, 255)
-                cv2.circle(img, (int(x2+lx/3), y2), 2, 255)
+                cv2.line(img, (int(x1 + lx*(1-px)/2), y1), (int(x2 + lx*(1-px)/2), y2), 255)
+                cv2.circle(img, (int(x1 + lx*(1-px)/2), y1), 2, 255)
+                cv2.circle(img, (int(x2 + lx*(1-px)/2), y2), 2, 255)
 
         return img
 
