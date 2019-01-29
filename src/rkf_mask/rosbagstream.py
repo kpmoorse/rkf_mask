@@ -18,7 +18,7 @@ class RosbagStream(object):
     def img_stream(self, framerate=30):
 
         flag = True
-        while flag:
+        while flag and not rospy.is_shutdown():
 
             for topic, msg, t in self.bag:
 
@@ -27,3 +27,5 @@ class RosbagStream(object):
 
             loop = rospy.get_param(rospy.resolve_name("~loop"), False)
             flag = loop
+
+            # if rospy.is_shutdown(): break
