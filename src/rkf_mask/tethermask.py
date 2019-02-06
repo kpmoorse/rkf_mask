@@ -4,7 +4,7 @@ from cv_bridge import CvBridge, CvBridgeError
 import numpy as np
 from time import time
 from sensor_msgs.msg import Image
-from std_msgs.msg import Int16
+# from std_msgs.msg import Int16
 
 
 class TetherMask(object):
@@ -16,7 +16,6 @@ class TetherMask(object):
         pub_topic = rospy.get_param(rospy.resolve_name("~output_image"), "masked_image")
 
         self.img_pub = rospy.Publisher(pub_topic, Image, queue_size=10)
-        self.dat_pub = rospy.Publisher("/mask_loc", Image, queue_size=10)
         self.img_sub = rospy.Subscriber(sub_topic, Image, self.callback)
         self.bridge = CvBridge()
 
@@ -30,7 +29,8 @@ class TetherMask(object):
         except CvBridgeError as e:
             print(e)
 
-        img = self.tmask(img)
+        if rospy.get_param(rospy.resolve_name("~apply_mask"), True):
+            img = self.tmask(img)
 
         try:
             self.img_pub.publish(self.bridge.cv2_to_imgmsg(img))
@@ -45,35 +45,35 @@ class TetherMask(object):
         thresh = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, np.ones((15, 15)))
 
         # Initialize LSD with exposed parameters
-        scl = rospy.get_param(rospy.resolve_name("~_scale"), 0.8)
-        sig = rospy.get_param(rospy.resolve_name("~_sigma_scale"), 1.0)
-        ang = rospy.get_param(rospy.resolve_name("~_ang_th"), 25)
+        scl = rospy.get_param(rospy.resolve_name("~lsd_scale"), 0.8)
+        sig = rospy.get_param(rospy.resolve_name("~lsd_sigma_scale"), 1.0)
+        ang = rospy.get_param(rospy.resolve_name("~lsd_ang_th"), 25)
         lsd = cv2.createLineSegmentDetector(_refine=cv2.LSD_REFINE_NONE,
                                             _scale=scl,
                                             _sigma_scale=sig,
                                             _ang_th=ang)
 
-        # Apply LSD to ROI (top-middle of 2x3 grid)
+        # Define ROI boundaries
         ly, lx = img.shape
-        px = rospy.get_param(rospy.resolve_name("~ROI_px"), 1./3)
-        py = rospy.get_param(rospy.resolve_name("~ROI_py"), 1./2)
-        offy = rospy.get_param(rospy.resolve_name("~ROI_offy"), 0)
+        px = rospy.get_param(rospy.resolve_name("~roi_px"), 1./3)
+        py = rospy.get_param(rospy.resolve_name("~roi_py"), 1./2)
+        voffset = rospy.get_param(rospy.resolve_name("~roi_voffset"), 0)
 
         # Calculate ROI bounds
-        xL = lx*(1-px)/2
-        xR = lx*(1+px)/2
-        yT = ly*offy
-        yB = ly*(offy+py)
+        roi_left = lx*(1-px)/2
+        roi_right = lx*(1+px)/2
+        roi_top = ly*voffset
+        roi_bottom = ly*(voffset+py)
 
-        lines = lsd.detect(thresh[int(yT):int(yB), int(xL):int(xR)])
+        lines = lsd.detect(thresh[int(roi_top):int(roi_bottom), int(roi_left):int(roi_right)])
         dy = lines[0][:, 0, 3] - lines[0][:, 0, 1]
 
         # Find tether polygon
         # ***Assumes tether edges are the longest straight lines in the ROI***
         edges = lines[0][np.argsort(np.abs(dy))[-2:]]
         points = edges.copy().reshape(-1, 2)
-        points[:, 0] += xL
-        points[:, 1] += yT
+        points[:, 0] += roi_left
+        points[:, 1] += roi_top
 
         # Truncate tether polygon for performance improvement
         trunc = rospy.get_param(rospy.resolve_name("~truncation"), 0.8)
@@ -99,9 +99,9 @@ class TetherMask(object):
             img = cv2.addWeighted(mask, alpha, img, 1-alpha, 0)
             for line in lines[0]:
                 x1, y1, x2, y2 = line[0]
-                cv2.line(img, (int(x1 + xL), int(y1 + yT)), (int(x2 + xL), int(y2 + yT)), 255)
-                cv2.circle(img, (int(x1 + xL), int(y1 + yT)), 2, 255)
-                cv2.circle(img, (int(x2 + xL), int(y2 + yT)), 2, 255)
+                cv2.line(img, (int(x1 + roi_left), int(y1 + roi_top)), (int(x2 + roi_left), int(y2 + roi_top)), 255)
+                cv2.circle(img, (int(x1 + roi_left), int(y1 + roi_top)), 2, 255)
+                cv2.circle(img, (int(x2 + roi_left), int(y2 + roi_top)), 2, 255)
 
         return img
 
