@@ -90,7 +90,26 @@ class TetherMask(object):
 
         # Inpaint over tether mask
         rad = rospy.get_param(rospy.resolve_name("~inpaint_radius"), 8)
-        img = cv2.inpaint(img, mask, rad, cv2.INPAINT_TELEA)
+        img = thresh #  cv2.inpaint(thresh, mask, rad, cv2.INPAINT_TELEA)
+        canny = cv2.Canny(img, 100, 200)
+
+        mask_paint = img * 0
+        pxlist = np.where(mask != 0)
+        sp_ctr = (np.max(pxlist[0]), int(np.mean(pxlist[1])))
+        spy = np.arange(sp_ctr[0] - 25, sp_ctr[0] + 25)
+        spx = np.arange(sp_ctr[1] - 50, sp_ctr[1] + 50)
+        cv2.rectangle(mask_paint, (spx[0], spy[0]), (spx[-1], spy[-1]), 255, -1)
+
+        mask_overlap = img * 0
+        canny_masked = img * 0
+        cv2.bitwise_and(255 - mask, mask_paint, mask_overlap)
+        cv2.bitwise_and(canny, mask_overlap, canny_masked)
+
+        y_proxy = np.tile(np.arange(0, img.shape[0], dtype=float)[:, None], (1, img.shape[1]))
+
+        # cv2.rectangle(img, (spx[0], spy[0]), (spx[-1], spy[-1]), 255, -1)
+        # img = y_proxy
+        print(img.type, y_proxy.type)
 
         # Draw detected lines and paint mask
         draw = rospy.get_param(rospy.resolve_name("~draw_diagnostic"), False)
