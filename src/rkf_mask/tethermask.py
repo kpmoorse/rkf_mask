@@ -4,6 +4,8 @@ from cv_bridge import CvBridge, CvBridgeError
 import numpy as np
 from time import time
 from sensor_msgs.msg import Image
+import matplotlib.pyplot as plt
+import scipy.interpolate as spi
 # from std_msgs.msg import Int16
 
 
@@ -89,14 +91,17 @@ class TetherMask(object):
         mask = cv2.dilate(mask, np.ones((21, 11)))
 
         # Inpaint over tether mask
-        rad = rospy.get_param(rospy.resolve_name("~inpaint_radius"), 8)
-        img = thresh #  cv2.inpaint(thresh, mask, rad, cv2.INPAINT_TELEA)
+        # rad = rospy.get_param(rospy.resolve_name("~inpaint_radius"), 8)
+        img = thresh  # cv2.inpaint(thresh, mask, rad, cv2.INPAINT_TELEA)
         canny = cv2.Canny(img, 100, 200)
 
         mask_paint = img * 0
         pxlist = np.where(mask != 0)
+        # spc = ((np.min(pxlist[0]), np.max(pxlist[0])),
+        #        (np.min(pxlist[1]), np.max(pxlist[1])))
+
         sp_ctr = (np.max(pxlist[0]), int(np.mean(pxlist[1])))
-        spy = np.arange(sp_ctr[0] - 25, sp_ctr[0] + 25)
+        spy = np.arange(sp_ctr[0] - int(len(np.unique(pxlist[0]))*0.9), sp_ctr[0] + 25)
         spx = np.arange(sp_ctr[1] - 50, sp_ctr[1] + 50)
         cv2.rectangle(mask_paint, (spx[0], spy[0]), (spx[-1], spy[-1]), 255, -1)
 
@@ -105,11 +110,12 @@ class TetherMask(object):
         cv2.bitwise_and(255 - mask, mask_paint, mask_overlap)
         cv2.bitwise_and(canny, mask_overlap, canny_masked)
 
-        y_proxy = np.tile(np.arange(0, img.shape[0], dtype=float)[:, None], (1, img.shape[1]))
+        # y_proxy = np.tile(np.arange(0, img.shape[0], dtype=float)[:, None], (1, img.shape[1])).astype('uint16')
 
-        # cv2.rectangle(img, (spx[0], spy[0]), (spx[-1], spy[-1]), 255, -1)
-        # img = y_proxy
-        print(img.type, y_proxy.type)
+        wnd = canny[spy[0]:spy[-1], spx[0]:spx[-1]]
+        submask = (self.spline_mask(wnd, range(35, 65)) * 255).astype('uint8')
+
+        img[spy[0]:spy[-1], spx[0]:spx[-1]] = submask
 
         # Draw detected lines and paint mask
         draw = rospy.get_param(rospy.resolve_name("~draw_diagnostic"), False)
@@ -123,6 +129,28 @@ class TetherMask(object):
                 cv2.circle(img, (int(x2 + roi_left), int(y2 + roi_top)), 2, 255)
 
         return img
+
+    def spline_mask(self, edge_img, ignore=None):
+
+        # Normalize Image
+        img = (edge_img - np.min(edge_img)) / np.ptp(edge_img)
+
+        # Extract edge, excepting "ignore" points
+        y_proxy = np.tile(np.arange(img.shape[0])[:, None], (1, img.shape[1])).astype('uint8')
+        Y = (img * y_proxy).astype('float')
+        Y[Y == 0] = np.nan
+        y = np.nanmean(Y, axis=0)
+        y[ignore] = np.nan
+
+        # Apply cubic spline regression
+        x = np.arange(img.shape[1])
+        x2 = x.copy()
+        x = x[~np.isnan(y)]
+        y = y[~np.isnan(y)]
+        spline = spi.UnivariateSpline(x, y)
+        y2 = spline(x2)
+
+        return y_proxy > np.tile(y2, (img.shape[0], 1))
 
     # *** Below functions are depricated ***
 

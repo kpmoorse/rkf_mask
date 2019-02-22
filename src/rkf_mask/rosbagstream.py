@@ -1,7 +1,7 @@
 import rospy
 from sensor_msgs.msg import Image
 import rosbag
-from time import time, sleep
+from time import sleep
 
 
 class RosbagStream(object):
@@ -18,7 +18,7 @@ class RosbagStream(object):
     def img_stream(self, framerate=30):
 
         flag = True
-        while flag and not rospy.is_shutdown():
+        while flag and ~rospy.is_shutdown():
 
             for topic, msg, t in self.bag:
 
